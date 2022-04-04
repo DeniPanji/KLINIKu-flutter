@@ -64,6 +64,8 @@ class _PasienMenuState extends State<PasienMenu> {
                 categoryK('assets/icons/eye.png', 'Dokter Jantung', '1 Dokter'),
                 categoryK(
                     'assets/icons/eye.png', 'Dokter Mata-mata', '1 Dokter'),
+                categoryK(
+                    'assets/icons/eye.png', 'Dokter Hati-hati', '1 Dokter'),
               ],
             ),
           ),
