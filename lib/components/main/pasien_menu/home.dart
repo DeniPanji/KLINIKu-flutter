@@ -1,159 +1,77 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:kliniku/components/main/pasien_menu/components/profile_page.dart';
+import 'components/home_menu.dart';
+import 'components/location_menu.dart';
+import 'components/status_menu.dart';
 
-class PasienMenu extends StatefulWidget {
-  PasienMenu({Key? key}) : super(key: key);
+class MenuPasien extends StatefulWidget {
+  const MenuPasien({Key? key}) : super(key: key);
 
   @override
-  State<PasienMenu> createState() => _PasienMenuState();
+  State<MenuPasien> createState() => _MenuPasienState();
 }
 
-class _PasienMenuState extends State<PasienMenu> {
+class _MenuPasienState extends State<MenuPasien> {
+  int index = 0;
+  final screens = [HomePage(), StatusPage(), LocationPage()];
+
   @override
   Widget build(BuildContext context) {
+    final items = <Widget>[
+      Icon(Icons.home, size: 30, color: Colors.white),
+      Icon(Icons.library_books, size: 30, color: Colors.white),
+      Icon(Icons.location_on_sharp, size: 30, color: Colors.white),
+    ];
+
     return Scaffold(
-      backgroundColor: Color.fromRGBO(232, 255, 221, 1),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        appBar: _buildAppBar(),
+        extendBody: true,
+        backgroundColor: Color.fromRGBO(232, 255, 221, 1),
+        bottomNavigationBar: _buildCurvedNavbar(items),
+        body: screens[index]);
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      // titleSpacing: 0,
+      automaticallyImplyLeading: true,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              children: <Widget>[_buildAppBar()],
-            ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: EdgeInsets.only(left: 35, right: 10, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Dokter yang beroperasi hari ini",
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 150),
-          Padding(
-            padding: EdgeInsets.only(left: 35, right: 10, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Kategori",
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 130,
-            margin: EdgeInsets.only(top: 20, left: 25),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                categoryK('assets/icons/eye.png', 'Dokter Mata', '1 Dokter'),
-                categoryK('assets/icons/eye.png', 'Dokter Gigi', '1 Dokter'),
-                categoryK('assets/icons/eye.png', 'Dokter Jantung', '1 Dokter'),
-                categoryK(
-                    'assets/icons/eye.png', 'Dokter Mata-mata', '1 Dokter'),
-                categoryK(
-                    'assets/icons/eye.png', 'Dokter Hati-hati', '1 Dokter'),
-              ],
-            ),
-          ),
-          SizedBox(height: 35),
-          Padding(
-            padding: EdgeInsets.only(left: 35, right: 10, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Your Appointment",
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()));
+              },
+              icon: Icon(
+                Icons.account_circle_outlined,
+                color: Colors.black,
+              )),
+          Text(
+            "Hello pasien!",
+            style: TextStyle(color: Colors.black, fontFamily: 'Montserrat'),
+          )
         ],
       ),
     );
   }
-}
 
-AppBar _buildAppBar() {
-  return AppBar(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    leading: IconButton(
-        onPressed: () {},
-        icon: Icon(
-          Icons.menu,
-          size: 27,
-          color: Colors.black,
-        )),
-    actions: <Widget>[
-      IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.notifications, size: 30, color: Colors.orange[700])),
-    ],
-  );
-}
-
-Widget categoryK(String img, String name, String drQty) {
-  return Container(
-    width: 120,
-    margin: EdgeInsets.only(right: 15),
-    decoration: BoxDecoration(
-      color: Color(0xff107163),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          child: Image.asset(img),
-          height: 50,
-        ),
-        Container(
-          child: Text(
-            name,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10),
-          padding: EdgeInsets.all(7),
-          decoration: BoxDecoration(
-            color: Color(0xffd9fffa).withOpacity(0.07),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Text(
-            drQty,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontFamily: 'Roboto',
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+  CurvedNavigationBar _buildCurvedNavbar(List<Widget> items) {
+    return CurvedNavigationBar(
+      color: Colors.green,
+      backgroundColor: Colors.transparent,
+      items: items,
+      animationCurve: Curves.easeInOut,
+      animationDuration: Duration(milliseconds: 300),
+      height: 55,
+      index: index,
+      onTap: (index) => setState(() {
+        this.index = index;
+      }),
+    );
+  }
 }
