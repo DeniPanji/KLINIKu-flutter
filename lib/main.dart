@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kliniku/components/main/screens/welcome_screens.dart';
 import 'package:flutter/services.dart';
+import 'package:kliniku/components/main/pasien_menu/home.dart';
 import 'package:kliniku/components/onboarding/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(primary: const Color.fromRGBO(23, 152, 75, 1))),
-      home: isViewed != 0 ? OnBoard() : WelcomeScreen(),
-      // home: OnBoard(),
+      // home: isViewed != 0 ? OnBoard() : WelcomeScreen(),
+      home: MenuPasien(),
     );
   }
 }
