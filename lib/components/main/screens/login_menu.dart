@@ -72,7 +72,7 @@ class _LoginMenuState extends State<LoginMenu> {
         // minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PasienMenu()));
+              context, MaterialPageRoute(builder: (context) => MenuPasien()));
         },
         child: Text(
           "MASUK",
