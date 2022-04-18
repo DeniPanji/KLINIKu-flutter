@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kliniku/components/main/pasien_menu/components/profile_page.dart';
 import 'components/home_menu.dart';

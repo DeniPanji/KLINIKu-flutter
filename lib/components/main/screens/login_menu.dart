@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kliniku/components/main/pasien_menu/home.dart';
 import 'package:kliniku/components/main/screens/signup_menu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginMenu extends StatefulWidget {
   LoginMenu({Key? key}) : super(key: key);
@@ -17,6 +19,9 @@ class _LoginMenuState extends State<LoginMenu> {
   final emailControler = new TextEditingController();
   final passControler = new TextEditingController();
 
+  //firebase
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     // Email Field
@@ -24,7 +29,17 @@ class _LoginMenuState extends State<LoginMenu> {
       autofocus: false,
       controller: emailControler,
       keyboardType: TextInputType.emailAddress,
-      //validator: (){},
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Tolong Masukkan Email");
+        }
+        //reg expression for email validation
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9+_.-]+.[a-z]")
+            .hasMatch(value)) {
+          return ("Tolong Masukkan Format Email dengan Benar");
+        }
+        return null;
+      },
       onSaved: (value) {
         emailControler.text = value!;
       },
@@ -45,7 +60,15 @@ class _LoginMenuState extends State<LoginMenu> {
       autofocus: false,
       controller: passControler,
       obscureText: true,
-      //validator: (){},
+      validator: (value) {
+        RegExp regex = new RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
+          return ("Password dibutuhkan untuk Melakukan Login");
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Tolong Masukkan Password dengan Benar(Min. 6 Karakter )");
+        }
+      },
       onSaved: (value) {
         passControler.text = value!;
       },
@@ -167,5 +190,21 @@ class _LoginMenuState extends State<LoginMenu> {
         ),
       ),
     );
+  }
+
+  //signin function
+  void singIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+                Fluttertoast.showToast(msg: "Login berhasil"),
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => MenuPasien())),
+              })
+          .catchError((e) {
+        Fluttertoast.showToast(msg: e!.message);
+      });
+    }
   }
 }
